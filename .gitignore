@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Plex.App.Insights.Core/bin
+/Plex.App.Insights.Core/obj
+/Plex.App.Insights.Core/.vs
