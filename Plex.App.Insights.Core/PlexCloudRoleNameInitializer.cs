@@ -21,8 +21,11 @@ public class PlexCloudRoleNameInitializer : ITelemetryInitializer
     {
         if (string.IsNullOrEmpty(telemetry.Context.Cloud.RoleName))
         {
-            telemetry.Context.Cloud.RoleName = Environment.GetEnvironmentVariable("CLOUD_ROLE_NAME") ?? CloudRoleName;
-            telemetry.Context.Cloud.RoleInstance = Environment.GetEnvironmentVariable("CLOUD_ROLE_INSTANCE") ?? CloudRoleInstance;
+            if (!string.IsNullOrWhiteSpace(CloudRoleName))
+                telemetry.Context.Cloud.RoleName = CloudRoleName;
+
+            if (!string.IsNullOrWhiteSpace(CloudRoleInstance))
+                telemetry.Context.Cloud.RoleInstance = CloudRoleInstance;
         }
     }
 }

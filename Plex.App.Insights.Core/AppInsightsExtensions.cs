@@ -15,7 +15,8 @@ public static class AppInsightsExtensions
             services.AddApplicationInsightsTelemetry(); // Add this line of code to enable Application Insights.
             services.AddServiceProfiler(); // Add this line of code to enable Profiler
 
-            if (!string.IsNullOrWhiteSpace(cloudRoleName) && !string.IsNullOrWhiteSpace(cloudRoleInstance))
+            if (!string.IsNullOrWhiteSpace(cloudRoleName)
+                || !string.IsNullOrWhiteSpace(cloudRoleInstance))
                 services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
         }
         return services;
