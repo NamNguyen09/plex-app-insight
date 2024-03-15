@@ -21,4 +21,19 @@ public static class AppInsightsExtensions
         }
         return services;
     }
+
+    public static IServiceCollection AddApplicationInsightsTelemetry(
+                                    this IServiceCollection services,
+                                    string cloudRoleName = "",
+                                    string cloudRoleInstance = "")
+    {
+        if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
+        {
+            services.AddApplicationInsightsTelemetry(); // Add this to enable Application Insights.
+            if (!string.IsNullOrWhiteSpace(cloudRoleName)
+                || !string.IsNullOrWhiteSpace(cloudRoleInstance))
+                services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
+        }
+        return services;
+    }
 }
