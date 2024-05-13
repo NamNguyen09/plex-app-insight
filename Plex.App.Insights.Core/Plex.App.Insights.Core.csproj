@@ -4,14 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2.22.3</Version>
+    <Version>2.22.4</Version>
     <Authors>Tom Lee</Authors>
     <Company>Tom Lee</Company>
     <PackageProjectUrl>https://github.com/NamNguyen09/plex-app-insight</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NamNguyen09/plex-app-insight</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Add extension to registry Application Insights without profiler</PackageReleaseNotes>
+    <PackageReleaseNotes>- Add parameter EnableSqlCommandTextInstrumentation</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Core" Version="1.39.0" />
+    <PackageReference Include="Azure.Identity" Version="1.11.3" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="2.6.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Profiler.AspNetCore" Version="2.7.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 
 </Project>

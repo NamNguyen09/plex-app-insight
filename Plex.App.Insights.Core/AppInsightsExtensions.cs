@@ -1,4 +1,5 @@
-﻿using Microsoft.ApplicationInsights.Extensibility;
+﻿using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Plex.App.Insights.Core;
@@ -8,7 +9,8 @@ public static class AppInsightsExtensions
     public static IServiceCollection AddApplicationInsightsTelemetryAndProfiler(
                                     this IServiceCollection services,
                                     string cloudRoleName = "",
-                                    string cloudRoleInstance = "")
+                                    string cloudRoleInstance = "",
+                                    bool enableSqlCommandTextInstrumentation = false)
     {
         if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
         {
@@ -18,6 +20,8 @@ public static class AppInsightsExtensions
             if (!string.IsNullOrWhiteSpace(cloudRoleName)
                 || !string.IsNullOrWhiteSpace(cloudRoleInstance))
                 services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
+
+            services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = enableSqlCommandTextInstrumentation; });
         }
         return services;
     }
@@ -25,7 +29,8 @@ public static class AppInsightsExtensions
     public static IServiceCollection AddApplicationInsightsTelemetry(
                                     this IServiceCollection services,
                                     string cloudRoleName = "",
-                                    string cloudRoleInstance = "")
+                                    string cloudRoleInstance = "",
+                                    bool enableSqlCommandTextInstrumentation = false)
     {
         if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
         {
@@ -33,6 +38,8 @@ public static class AppInsightsExtensions
             if (!string.IsNullOrWhiteSpace(cloudRoleName)
                 || !string.IsNullOrWhiteSpace(cloudRoleInstance))
                 services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
+
+            services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) => { module.EnableSqlCommandTextInstrumentation = enableSqlCommandTextInstrumentation; });
         }
         return services;
     }
