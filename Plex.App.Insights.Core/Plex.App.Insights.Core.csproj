@@ -4,14 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2.22.4</Version>
+    <Version>2.22.5</Version>
     <Authors>Tom Lee</Authors>
     <Company>Tom Lee</Company>
     <PackageProjectUrl>https://github.com/NamNguyen09/plex-app-insight</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NamNguyen09/plex-app-insight</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Add parameter EnableSqlCommandTextInstrumentation</PackageReleaseNotes>
+    <PackageReleaseNotes>- Rename method AddApplicationInsightsTelemetry to AddAppInsightsTelemetry</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
