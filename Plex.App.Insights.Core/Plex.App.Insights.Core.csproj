@@ -4,14 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>2.22.5</Version>
+    <Version>2.22.6</Version>
     <Authors>Tom Lee</Authors>
     <Company>Tom Lee</Company>
     <PackageProjectUrl>https://github.com/NamNguyen09/plex-app-insight</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NamNguyen09/plex-app-insight</RepositoryUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>- Rename method AddApplicationInsightsTelemetry to AddAppInsightsTelemetry</PackageReleaseNotes>
+    <PackageReleaseNotes>-  Fix bug that cannot send data to app insights</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
