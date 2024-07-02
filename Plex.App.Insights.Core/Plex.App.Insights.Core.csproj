@@ -1,18 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<Nullable>enable</Nullable>
+	<ImplicitUsings>enable</ImplicitUsings>
     <Version>2.22.6</Version>
     <Authors>Tom Lee</Authors>
     <Company>Tom Lee</Company>
     <PackageProjectUrl>https://github.com/NamNguyen09/plex-app-insight</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NamNguyen09/plex-app-insight</RepositoryUrl>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>-  Fix bug that cannot send data to app insights</PackageReleaseNotes>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<OutputType>Library</OutputType>
+	<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+	<IsPackable>true</IsPackable>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

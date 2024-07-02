@@ -1,22 +1,22 @@
 ﻿using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Plex.Extensions.Configuration;
 
 namespace Plex.App.Insights.Core;
 public static class AppInsightsExtensions
 {
-    public static IServiceCollection AddAppInsights(this IServiceCollection services,
-                                                    IConfiguration configuration)
+    public static WebApplicationBuilder AddAppInsights(this WebApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING")))
         {
-            services.AddApplicationInsightsTelemetry(); // Add this line of code to enable Application Insights.
+            builder.Services.AddApplicationInsightsTelemetry(); // Add this line of code to enable Application Insights.
 
+            var configuration = builder.Configuration;
             if (configuration.GetConfigBoolValue("EnableAppInsightsProfiler"))
             {
-                services.AddServiceProfiler(); // Add this line of code to enable Profiler
+                builder.Services.AddServiceProfiler(); // Add this line of code to enable Profiler
             }
 
             string cloudRoleName = configuration.GetConfigValue("CloudRoleName");
@@ -24,17 +24,17 @@ public static class AppInsightsExtensions
             if (!string.IsNullOrWhiteSpace(cloudRoleName)
                 || !string.IsNullOrWhiteSpace(cloudRoleInstance))
             {
-                services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
+                builder.Services.AddSingleton<ITelemetryInitializer>(sp => new PlexCloudRoleNameInitializer(cloudRoleName, cloudRoleInstance));
             }
 
             bool enableSqlCommandTextInstrumentation = configuration.GetConfigBoolValue("EnableSqlCommandTextInstrumentation");
-            services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) =>
+            builder.Services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) =>
             {
                 module.EnableSqlCommandTextInstrumentation = enableSqlCommandTextInstrumentation;
             });
         }
 
-        return services;
+        return builder;
     }
 
     static bool GetConfigBoolValue(this IConfiguration configuration, string key)

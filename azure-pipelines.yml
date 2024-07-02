@@ -5,7 +5,7 @@ variables:
     #value: $[counter(variables['minor'], 1)] # This will get reset every time minor gets bumped.
   - group: shared_variables
   - name: nugetVersion
-    value: '8.0.$(Build.BuildNumber)'
+    value: '2.22.$(Build.BuildNumber)'
   - name: buildPlatform
     value: "Any CPU"
   - name: buildConfiguration
@@ -13,7 +13,7 @@ variables:
   - name: agentPool
     value: Azure Pipelines
   - name: solution
-    value: "Plex.DataAccess.Base.sln"
+    value: "Plex.App.Insights.Core.sln"
     
 trigger:
   branches:
@@ -27,7 +27,7 @@ pool: '$(agentPool)'
 
 stages:
   - stage: BuildAndPushToArtifact
-    displayName: "Build artifact for DataAccessBase and Push to Artifacts"
+    displayName: "Build artifact for Plex.App.Insights.Core and Push to Artifacts"
     jobs:
       - job: BuildAndPush
         displayName: "BuildAndPush:"
