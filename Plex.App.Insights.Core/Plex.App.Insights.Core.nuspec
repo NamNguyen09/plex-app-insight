@@ -6,7 +6,7 @@
 			<dependency id="Microsoft.ApplicationInsights.AspNetCore" version="[2.22.0,)" />
 			<dependency id="Microsoft.ApplicationInsights.Profiler.AspNetCore" version="[2.7.1,)" />
 			<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="[8.0.0,)" />
-			<dependency id="Plex.Extensions.Configuration" version="[8.0.2,)" />
+			<dependency id="Plex.Extensions.Configuration" version="[8.0.3,)" />
 		</dependencies>
 		<title>Plex.App.Insights.Core</title>
 		<version>2.22</version>
