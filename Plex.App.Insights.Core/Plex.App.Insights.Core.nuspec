@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>Plex.App.Insights.Core</id>
+		<dependencies>
+			<dependency id="Microsoft.ApplicationInsights.AspNetCore" version="[2.22.0,)" />
+			<dependency id="Microsoft.ApplicationInsights.Profiler.AspNetCore" version="[2.7.1,)" />
+			<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="[8.0.0,)" />
+			<dependency id="Plex.Extensions.Configuration" version="[8.0.2,)" />
+		</dependencies>
+		<title>Plex.App.Insights.Core</title>
+		<version>2.22</version>
+		<authors>Tom Lee</authors>
+		<owners>Tom Lee</owners>
+		<projectUrl>https://github.com/NamNguyen09/plex-app-insight</projectUrl>
+		<license type="file">LICENSE.md</license>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>A project that help to register Application Insights and custom cloud role name</description>
+		<readme>README.md</readme>
+		<releaseNotes>$releasenotes$</releaseNotes>
+	</metadata>
+	<files>
+		<file src="..\LICENSE.md" target="LICENSE.md" />
+		<file src="..\README.md" target="README.md" />
+		<!-- Include other necessary files -->
+	</files>
+</package>
