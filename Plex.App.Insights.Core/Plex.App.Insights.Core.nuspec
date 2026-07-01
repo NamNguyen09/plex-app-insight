@@ -1,15 +1,13 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Plex.App.Insights.Core</id>
 		<dependencies>
-			<dependency id="Microsoft.ApplicationInsights.AspNetCore" version="[2.22.0,)" />
-			<dependency id="Microsoft.ApplicationInsights.Profiler.AspNetCore" version="[2.7.1,)" />
-			<dependency id="Microsoft.Extensions.Configuration.Abstractions" version="[8.0.0,)" />
-			<dependency id="Plex.Extensions.Configuration" version="[8.0.3,)" />
+			<dependency id="Microsoft.ApplicationInsights.AspNetCore" version="[3.1.2,)" />
+			<dependency id="Plex.Extensions.Configuration" version="[8.0.6,)" />
 		</dependencies>
 		<title>Plex.App.Insights.Core</title>
-		<version>2.22</version>
+		<version>8.0</version>
 		<authors>Tom Lee</authors>
 		<owners>Tom Lee</owners>
 		<projectUrl>https://github.com/NamNguyen09/plex-app-insight</projectUrl>
