@@ -4,7 +4,7 @@
 		<id>Plex.App.Insights.Core</id>
 		<dependencies>
 			<dependency id="Microsoft.ApplicationInsights.AspNetCore" version="[3.1.2,)" />
-			<dependency id="Plex.Extensions.Configuration" version="[8.0.6,)" />
+			<dependency id="Plex.Extensions.Configuration" version="[8.0.7,)" />
 		</dependencies>
 		<title>Plex.App.Insights.Core</title>
 		<version>8.0</version>
