@@ -1,7 +1,5 @@
 using System.Data.Common;
-using Azure.Monitor.OpenTelemetry.AspNetCore;
-using OpenTelemetry;
-using OpenTelemetry.Logs;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Plex.Extensions.Configuration;
@@ -18,37 +16,42 @@ public static class AppInsightsExtensions
 
         var configuration = builder.Configuration;
 
-        builder.Services.AddOpenTelemetry().UseAzureMonitor();
-
         string cloudRoleName = configuration.GetConfigValue("CloudRoleName");
         string cloudRoleInstance = configuration.GetConfigValue("CloudRoleInstance");
         string cloudRoleVersion = configuration.GetConfigValue("CloudRoleVersion");
         bool enableSqlCommandTextInstrumentation = configuration.GetConfigBoolValue("EnableSqlCommandTextInstrumentation");
         bool hasCloudRoleSetting = !string.IsNullOrWhiteSpace(cloudRoleName) || !string.IsNullOrWhiteSpace(cloudRoleInstance);
 
-        builder.Services.ConfigureOpenTelemetryTracerProvider((sp, b) =>
-        {
-            if (hasCloudRoleSetting)
-                b.ConfigureResource(rb => rb.AddServiceResource(cloudRoleName, cloudRoleInstance, cloudRoleVersion));
-
-            b.AddSqlClientInstrumentation(options =>
-            {
-                if (enableSqlCommandTextInstrumentation)
-                {
-                    options.EnrichWithSqlCommand = (activity, sqlCommand) =>
-                    {
-                        if (sqlCommand is DbCommand cmd)
-                            activity.SetTag("db.query.text", cmd.CommandText);
-                    };
-                }
-            });
-        });
+        var otelBuilder = builder.Services.AddOpenTelemetry();
 
         if (hasCloudRoleSetting)
+            otelBuilder.ConfigureResource(rb => rb.AddServiceResource(cloudRoleName, cloudRoleInstance, cloudRoleVersion));
+
+        otelBuilder.WithTracing(tracing =>
         {
-            builder.Services.ConfigureOpenTelemetryLoggerProvider((sp, b) =>
-                b.ConfigureResource(rb => rb.AddServiceResource(cloudRoleName, cloudRoleInstance, cloudRoleVersion)));
-        }
+            tracing.AddAspNetCoreInstrumentation()
+                   .AddHttpClientInstrumentation()
+                   .AddSqlClientInstrumentation(options =>
+                   {
+                       if (enableSqlCommandTextInstrumentation)
+                       {
+                           options.EnrichWithSqlCommand = (activity, sqlCommand) =>
+                           {
+                               if (sqlCommand is DbCommand cmd)
+                                   activity.SetTag("db.query.text", cmd.CommandText);
+                           };
+                       }
+                   })
+                   .AddAzureMonitorTraceExporter();
+        });
+
+        otelBuilder.WithMetrics(metrics =>
+        {
+            metrics.AddMeter("Microsoft.AspNetCore.Hosting")
+                   .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+                   .AddMeter("System.Net.Http")
+                   .AddAzureMonitorMetricExporter();
+        });
 
         return builder;
     }
