@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using OpenTelemetry;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
@@ -17,10 +18,7 @@ public static class AppInsightsExtensions
 
         var configuration = builder.Configuration;
 
-        builder.Services.AddApplicationInsightsTelemetry();
-
-        // Note: Microsoft.ApplicationInsights.Profiler.AspNetCore is incompatible with SDK 3.x.
-        // For profiling with SDK 3.x, use Azure.Monitor.OpenTelemetry.Profiler instead.
+        builder.Services.AddOpenTelemetry().UseAzureMonitor();
 
         string cloudRoleName = configuration.GetConfigValue("CloudRoleName");
         string cloudRoleInstance = configuration.GetConfigValue("CloudRoleInstance");
@@ -28,29 +26,17 @@ public static class AppInsightsExtensions
         bool enableSqlCommandTextInstrumentation = configuration.GetConfigBoolValue("EnableSqlCommandTextInstrumentation");
         bool hasCloudRoleSetting = !string.IsNullOrWhiteSpace(cloudRoleName) || !string.IsNullOrWhiteSpace(cloudRoleInstance);
 
-        // ITelemetryInitializer and DependencyTrackingTelemetryModule are removed in SDK 3.x.
-        // Configure resource attributes on BOTH trace and log providers so cloud role name
-        // appears on all telemetry (requests/dependencies AND log entries) in Application Insights.
-        //   service.name        → client.Context.Cloud.RoleName
-        //   service.instance.id → client.Context.Cloud.RoleInstance
-        //   service.version     → client.Context.Component.Version
         builder.Services.ConfigureOpenTelemetryTracerProvider((sp, b) =>
         {
             if (hasCloudRoleSetting)
                 b.ConfigureResource(rb => rb.AddServiceResource(cloudRoleName, cloudRoleInstance, cloudRoleVersion));
 
-            // Replaces DependencyTrackingTelemetryModule.EnableSqlCommandTextInstrumentation.
-            // SetDbStatementForText/SetDbStatementForStoredProcedure were removed in OpenTelemetry.Instrumentation.SqlClient 1.9+.
-            // SQL query text is now captured via EnrichWithSqlCommand when enabled.
             b.AddSqlClientInstrumentation(options =>
             {
                 if (enableSqlCommandTextInstrumentation)
                 {
-                    // To capture SQL parameters, set this in appsettings.json or environment variable: OTEL_DOTNET_EXPERIMENTAL_SQLCLIENT_ENABLE_TRACE_DB_QUERY_PARAMETERS
                     options.EnrichWithSqlCommand = (activity, sqlCommand) =>
                     {
-                        // EnrichWithSqlCommand receives object — cast via DbCommand base class
-                        // to support both Microsoft.Data.SqlClient and System.Data.SqlClient
                         if (sqlCommand is DbCommand cmd)
                             activity.SetTag("db.query.text", cmd.CommandText);
                     };
@@ -58,7 +44,6 @@ public static class AppInsightsExtensions
             });
         });
 
-        // Logs: ILogger entries, exceptions
         if (hasCloudRoleSetting)
         {
             builder.Services.ConfigureOpenTelemetryLoggerProvider((sp, b) =>
